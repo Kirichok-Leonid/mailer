@@ -5,28 +5,65 @@ require_once ('../components/DB.php');
 $db = Db::getConnection();
 
 
-$query = "SELECT c.email, t.subject, l.body FROM current c INNER JOIN task t ON c.task_id = t.id INNER JOIN letter l ON t.letter_id = l.id";
+$query = "SELECT c.id, c.email, c.task_id, t.subject, t.manager, l.body FROM current c INNER JOIN task t ON c.task_id = t.id INNER JOIN letter l ON t.letter_id = l.id";
 $result = $db->query($query);
 
 $dataArray = $result->fetchAll(PDO::FETCH_ASSOC);
 
-var_dump($dataArray);
 
-// тут додати умову "якщо масив пустий - припинити виконання скрипта";
+// якщо масив пустий - припинити виконання скрипта
+if (!$dataArray)
+    die();
 
-//============================================================
+// лічильник відправлених повідомлень
+$count = 0;
 
+// цикл відправки повідомлень
 foreach ($dataArray as $data)
 {
+    // змінна статусу відправки повідомлення
+    $status = "sent";
+
+    // email адреса сайту-відправника
+    $sender = $data['manager'];
+
+    // формування header блоку повідомлення
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type: text/html; charset=charset=utf-8" . "\r\n";
+    $headers .= "From: $sender " . "\r\n";
+    $headers .= "X-Mailer: PHP/". phpversion();
 
 
     // перевірка email на валідність
+    if (filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+    {
+        // відправка повідомлення
+        if(!mail($data['email'], $data['subject'], $data['body'], $headers))
+        {
+            $status = "not sent";
+        }
 
-    // відправка повідомлення
+        $count ++;
+    } else {
+        $status = "incorrect email";
+    }
 
-    // запис в лог
+    // запис в лог ($status, $data['task_id'], $data['email'])
+    $query = "INCERT INTO `log` (`task_id`, `email`, `status`, `time`) VALUES ('" .
+        $data['task_id'] . "','" . $data['email'] . "','" . $status . "','" . date("Y:m:d H:i:s") . "')";
+    $db->query($query);
 
-    // видалення запису з таблиці
 
+    // видалення запису з таблиці current (id = $data['id'])
+    $query = "DELETE FROM `current` WHERE id = " . $data['id'] ;
+    $db->query($query);
+
+    unset($headers);
+
+    // умова виходу з циклу
+    // 16 повідомлень - через обмеження провайдера
+    // цей cron scriрt має запускатись кожні 10 хвилин
+    if ($count == 16)
+        break;
 
 }

@@ -33,10 +33,8 @@ class MailsModel
      */
     public function getUACompanyList()
     {
-        $db = Db::getConnection();
         $sql = "SELECT * FROM `UACompany`";
-
-        return $db->query($sql);
+        return Db::getConnection()->query($sql, PDO::FETCH_ASSOC);
     }
 
     /**

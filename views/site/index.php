@@ -31,7 +31,7 @@
                 <nav id="navLeft">
                     <div class="wrap">
                         <a href="#" class="logo"><img src="../../template/images/mailerabc__rd.png" alt="сервис рассылки"></a>
-                        <div class="nav__rightside"><a class="nav__enter" href="#">ВХОД</a></div>
+                        <div class="nav__rightside"><a class="nav__enter" href="/login">ВХОД</a></div>
                         <div class="clear"></div>
                     </div>
                 </nav>

@@ -37,40 +37,6 @@ class APIModel
     }
 
     /**
-     * @return mixed
-     */
-    public function getAllEmails()
-    {
-        $connection = $this->APIConnection();
-        $iterator = 1;
-        $count = 0;
-
-        for($i=0; $i < 20; $i ++)
-        {
-            usleep(500000);         // because of Megaplan`s limitation
-
-            $query_params = array( 'Limit'=>1000 , 'Offset' => $iterator );
-            $raw = $connection->post('/BumsCrmApiV01/Contractor/list.api', $query_params);
-            $str = json_decode($raw, true);
-
-            $clients = $str['data']['clients'];
-
-            foreach ($clients as $client)
-            {
-                if($client['Email'] != "")
-                {
-                    $emails[$count] = $client['Email'];
-                    $count ++;
-                }
-
-            }
-            $iterator += 1000;
-        }
-
-        return $emails;
-    }
-
-    /**
      * @param $param
      * @return mixed
      */
@@ -80,11 +46,17 @@ class APIModel
         $iterator = 1;
         $count = 0;
 
-        for($i=0; $i < 7; $i ++)
+        do
         {
             usleep(500000);         // because of Megaplan`s limitation
 
-            $query_params = array( 'Limit'=>1000 , 'Offset' => $iterator, 'qs' => $param );
+            if($param != null)
+            {
+                $query_params = array( 'Limit'=>1000 , 'Offset' => $iterator, 'qs' => $param );
+            } else {
+                $query_params = array( 'Limit'=>1000 , 'Offset' => $iterator);
+            }
+
             $raw = $connection->post('/BumsCrmApiV01/Contractor/list.api', $query_params);
             $str = json_decode($raw, true);
 
@@ -99,7 +71,7 @@ class APIModel
                 }
             }
             $iterator += 1000;
-        }
+        } while ($clients);
 
         return $emails;
     }

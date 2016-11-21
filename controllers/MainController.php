@@ -36,6 +36,18 @@ class MainController
             $sender = $_POST['sender'];
             $letter = $_POST['letter'];
             $subject = $_POST['subject'];
+
+            $errors = ConfigModel::checkConfigForm($letter, $sender, $group, $subject);
+
+            if( $errors == false)
+            {
+                // запис в БД нової задачі
+                $task_id = $data->setNewTask($letter, $subject, $sender);
+
+                // запис в БД емейлів для поточної відправки
+                $emails = new MailsModel();
+                $data->addToCurrent($emails->getGroupEmails($group), $task_id);
+            }
         }
 
         require_once (ROOT. '/views/main/distribution.php');

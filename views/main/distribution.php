@@ -23,7 +23,7 @@
             <select name="letter" size="1">
 
                 <?php foreach ($letters as $row): ?>
-                    <option value="<?php $row['id']; ?>"><?php echo $row['name']; ?></option>
+                    <option value="<?=$row['id']?>"><?php echo $row['name']; ?></option>
                 <?php endforeach; ?>
 
             </select></p>
@@ -31,7 +31,7 @@
             <select name="sender" size="1">
 
                 <?php foreach ($managers as $manager): ?>
-                    <option value="<?php $manager['email']; ?>"><?php echo  $manager['name'] . " < "  . $manager['email'] . " > "; ?></option>
+                    <option value="<?=$manager['email']?>"><?php echo  $manager['name'] . " < "  . $manager['email'] . " > "; ?></option>
                 <?php endforeach; ?>
 
             </select></p>
@@ -51,7 +51,7 @@
                 <option value="12">База предприятий</option>
             </select></p>
         <p>Тема рассылки
-            <input type="text" name="subject" placeholder="тема рассылки"/></p>
+            <input type="text" name="subject" placeholder="тема рассылки" value="<?php echo $subject; ?>"/></p>
         <button type="submit" name="submit" class="btn-default">Установить</button>
 
 

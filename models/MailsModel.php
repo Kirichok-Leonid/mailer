@@ -20,6 +20,9 @@ class MailsModel
 
     private $APIModel = null;
 
+    /**
+     * @return APIModel|null
+     */
     private function getAPIModel()
     {
         if ($this->APIModel == null)
@@ -28,13 +31,63 @@ class MailsModel
         }
         return $this->APIModel;
     }
+
+    /**
+     * @param $group
+     * @return mixed
+     */
+    public function getGroupEmails($group)
+    {
+        switch ($group)
+        {
+            case '1':
+                $emails = $this->getAllGroupList();
+                break;
+            case '2':
+                $emails = $this->getWebList();
+                break;
+            case '3':
+                $emails = $this->getKanctovarList();
+                break;
+            case '4':
+                $emails = $this->getBookList();
+                break;
+            case '5':
+                $emails = $this->getBookClubList();
+                break;
+            case '6':
+                $emails = $this->getPeriodikaList();
+                break;
+            case '7':
+                $emails = $this->getPoligraphList();
+                break;
+            case '8':
+                $emails = $this->getRatpList();
+                break;
+            case '9':
+                $emails = $this->getReklamaList();
+                break;
+            case '10':
+                $emails = $this->getTypographList();
+                break;
+            case '11':
+                $emails = $this->getPhotobookList();
+                break;
+            case '12':
+                $emails = $this->getUACompanyList();
+                break;
+        }
+        return $emails;
+
+    }
+
     /**
      * @return PDOStatement
      */
     public function getUACompanyList()
     {
         $sql = "SELECT * FROM `UACompany`";
-        return Db::getConnection()->query($sql, PDO::FETCH_ASSOC);
+        return Db::getConnection()->query($sql)->fetchAll(PDO::FETCH_COLUMN, 1);
     }
 
     /**
@@ -42,7 +95,7 @@ class MailsModel
      */
     public function getAllGroupList()      //вcя база мегаплана
     {
-        return $this->getAPIModel()->getAllEmails();
+        return $this->getAPIModel()->getEmails();
     }
 
     /**

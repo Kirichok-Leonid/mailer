@@ -1,12 +1,15 @@
 <?php
 
-/**
+/**Клас для роботи з/перевірки даних користувача
+ *
  * Class UserModel
  */
 class UserModel
 {
 
-    /**
+    /**Метод запису паролю, імені та емейлу користувача до БД,
+     * реєстрація
+     *
      * @param $name
      * @param $email
      * @param $password
@@ -27,7 +30,8 @@ class UserModel
         return $result->execute();
     }
 
-    /**
+    /**Метод для перевідки вхідних даних з форми реєстрації
+     *
      * @param $name
      * @param $email
      * @param $password
@@ -59,7 +63,8 @@ class UserModel
         return $errors;
     }
 
-    /**
+    /**Метод для перевірки вхідних даних з форми авторизації
+     *
      * @param $name
      * @param $password
      * @return array|bool
@@ -87,12 +92,18 @@ class UserModel
         return $errors;
     }
 
+    /**Метод для конвертації паролю в хеш суму md5, що буде зберігатись у БД
+     *
+     * @param $password
+     * @return string
+     */
     public static function preparePass($password)
     {
         return md5($password);
     }
 
-    /**
+    /**Метод перевірки імені користувача на довжину (не коротше 3х символів)
+     *
      * @param $name
      * @return bool
      */
@@ -105,7 +116,8 @@ class UserModel
         return false;
     }
 
-    /**
+    /**Метод перевірки довжини паролю (не коротше 6х символів)
+     *
      * @param $password
      * @return bool
      */
@@ -118,7 +130,8 @@ class UserModel
         return false;
     }
 
-    /**
+    /**Метод перевірки емейлу на валідність (правильність)
+     *
      * @param $email
      * @return bool
      */
@@ -131,7 +144,8 @@ class UserModel
         return false;
     }
 
-    /**
+    /**Метод перевірки наявності емейлу в БД серед користувачів
+     *
      * @param $email
      * @return bool
      */
@@ -152,7 +166,8 @@ class UserModel
 
     }
 
-    /**
+    /**Метод перевірки даних користувача (для авторизації)
+     *
      * @param $name
      * @param $pass
      * @return bool or int
@@ -179,7 +194,8 @@ class UserModel
         return false;
     }
 
-    /**
+    /**Метод авторизації користувача в системі
+     *
      * @param $userID
      */
     public static function auth($userID)

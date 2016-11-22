@@ -46,12 +46,21 @@ foreach ($dataArray as $data)
         $count ++;
     } else {
         $status = "incorrect email";
+
     }
 
     // запис в лог ($status, $data['task_id'], $data['email'])
-    $query = "INCERT INTO `log` (`task_id`, `email`, `status`, `time`) VALUES ('" .
-        $data['task_id'] . "','" . $data['email'] . "','" . $status . "','" . date("Y:m:d H:i:s") . "')";
-    $db->query($query);
+    $query = "INSERT INTO log(task_id, email, status, time) VALUES (:task_id, :email, :status, :time)";
+    $result = $db->prepare($query);
+
+    $time = date("Y:m:d H:i:s");
+
+    $result->bindParam(':task_id', $data['task_id'], PDO::PARAM_INT );
+    $result->bindParam(':email', $data['email'], PDO::PARAM_STR);
+    $result->bindParam(':status', $status, PDO::PARAM_STR);
+    $result->bindParam(':time', $time, PDO::PARAM_STR);
+
+    $result->execute();
 
 
     // видалення запису з таблиці current (id = $data['id'])

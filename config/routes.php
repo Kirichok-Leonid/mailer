@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Таблиця роутів
+ */
+
 return array(
     'registration' => 'user/registration',  // actionRegistration в UserController
     'login' => 'user/login',                // actionLogin в UserController

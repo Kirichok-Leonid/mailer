@@ -1,11 +1,12 @@
 <?php
 
-/**
+/**Клас для роботи з БД
  * Class DataModel
  */
 class DataModel
 {
-    /**
+    /**Метод, що повертає виборку збережених листів.
+     *
      * @return PDOStatement
      */
     public function getLetters()
@@ -14,8 +15,8 @@ class DataModel
         return Db::getConnection()->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    /**
+    /**Метод, що повертає виборку усіх менеджерів
+     *
      * @return PDOStatement
      */
     public function getManagers()
@@ -24,7 +25,8 @@ class DataModel
         return Db::getConnection()->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
+    /**Метод для запису даних нової забачі в БД
+     *
      * @param $name
      * @param $letter_id
      * @param $subject
@@ -33,13 +35,15 @@ class DataModel
      */
     public function setNewTask($letter_id, $subject, $manager)
     {
-        $db = Db::getConnection();
-        $query = "INSERT INTO task(letter_id, subject, manager) VALUES (:letter_id, :subject, :manager)";
+        $start = date("Y-m-d H:i:s");
 
+        $db = Db::getConnection();
+        $query = "INSERT INTO task(letter_id, subject, start ,manager) VALUES (:letter_id, :subject, :start, :manager)";
         $result = $db->prepare($query);
 
         $result->bindParam(':letter_id', $letter_id, PDO::PARAM_INT);
         $result->bindParam(':subject', $subject, PDO::PARAM_STR);
+        $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':manager', $manager, PDO::PARAM_STR);
         //$result->bindParam(':name', $name, PDO::PARAM_STR);
         $result->execute();
@@ -47,8 +51,9 @@ class DataModel
         return $db->lastInsertId();
     }
 
-
-    /**
+    /**Метод для додавання масиву емейлів для розсилки в БД
+     * (додавання до черги)
+     *
      * @param $emails
      * @param $task_id
      */
@@ -61,7 +66,9 @@ class DataModel
         return header("Location: main");
     }
 
-    /**
+    /**Метод для запису емейлу для розсилки в БД
+     * (додавання до черги)
+     *
      * @param $email
      * @param $task_id
      * @return bool

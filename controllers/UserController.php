@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class UserController
+ */
 class UserController
 {
     /**

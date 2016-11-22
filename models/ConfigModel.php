@@ -1,12 +1,14 @@
 <?php
 
-/**
+/**Клас для перевірки на валідність даних з форми постановки задачі
+ *
  * Class ConfigModel
  */
 class ConfigModel
 {
 
-    /**
+    /**Метод для перевірки на валідність даних з форми постановки задачі
+     *
      * @param $letter
      * @param $sender
      * @param $group
@@ -36,7 +38,8 @@ class ConfigModel
         return $errors;
     }
 
-    /**
+    /**Метод для перевірки теми на кількість символів (не менше 3х)
+     *
      * @param $subject
      * @return bool
      */
@@ -49,7 +52,8 @@ class ConfigModel
         return false;
     }
 
-    /**
+    /**Метод для перевірки наявності коректниз значень в змінній
+     *
      * @param $group
      * @return bool
      */
@@ -62,7 +66,8 @@ class ConfigModel
         return false;
     }
 
-    /**
+    /**Метод для перевірки параметру на вміст пустого значення
+     *
      * @param $param
      * @return bool
      */

@@ -25,7 +25,16 @@ class DataModel
         return Db::getConnection()->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**Метод для запису даних нової забачі в БД
+    /**
+     * @return array
+     */
+    public function getTasks()
+    {
+        $query = "SELECT * FROM task";
+        return Db::getConnection()->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**Метод для запису даних нової задачі в БД
      *
      * @param $name
      * @param $letter_id
@@ -84,5 +93,51 @@ class DataModel
         return $result->execute();
     }
 
+    /**Метод для запису нового менеджера в БД
+     * @param $name
+     * @param $email
+     * @return bool
+     */
+    public function addManager($name, $email)
+    {
+        $query = "INSERT INTO manager(name ,email) VALUES (:name, :email)";
+
+        $result = Db::getConnection()->prepare($query);
+        $result->bindParam(':name', $name, PDO::PARAM_STR);
+        $result->bindParam(':email', $email, PDO::PARAM_STR);
+
+        return $result->execute();
+    }
+
+    //===================================================================================
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function countLogsByTaskId($id)
+    {
+        $query = "SELECT COUNT(*) FROM log WHERE task_id = :id";
+
+        $result = Db::getConnection()->prepare($query);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+
+        return $result->execute();
+    }
+
+    /**
+     * @param $status
+     * @param $id
+     * @return bool
+     */
+    public function getLogsByStatusAndTaskId($status, $id)
+    {
+        $query = "SELECT COUNT(*) FROM log WHERE task_id = :id AND status = :status";
+
+        $result = Db::getConnection()->prepare($query);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':status', $status, PDO::PARAM_STR);
+
+        return $result->execute();
+    }
 
 }

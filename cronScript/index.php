@@ -40,12 +40,12 @@ foreach ($dataArray as $data)
         // відправка повідомлення
         if(!mail($data['email'], $data['subject'], $data['body'], $headers))
         {
-            $status = "not sent";
+            $status = "not sent";               // статус відправки
         }
 
         $count ++;
     } else {
-        $status = "incorrect email";
+        $status = "incorrect email";            // статус відправки
 
     }
 

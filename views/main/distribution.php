@@ -12,12 +12,19 @@
 </head>
 <body>
 
+<p><a href="/main"> <- статистика </a>/////<a href="/newmanager"> Добавить нового менеджера</a></p>
 
+<?php if (isset($errors) && is_array($errors)): ?>
+    <ul>
+        <?php foreach ($errors as $error): ?>
+            <li> - <?php echo $error; ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 
 <div class="Config__form">
     <h2>Форма установки параметров рассылки</h2>
     <form action="#" method="post">
-
 
         <p>Выбор письма
             <select name="letter" size="1">
@@ -54,11 +61,8 @@
             <input type="text" name="subject" placeholder="тема рассылки" value="<?php echo $subject; ?>"/></p>
         <button type="submit" name="submit" class="btn-default">Установить</button>
 
-
     </form>
 </div>
-
-
 
 </body>
 </html>

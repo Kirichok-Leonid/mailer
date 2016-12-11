@@ -12,6 +12,9 @@ class MainController
     {
         $userID = UserModel::checkLogged();             // перевірка авторизації користувача
 
+        $data = new DataModel();
+        $tasks = $data->getTasks();
+
         require_once (ROOT. '/views/main/index.php');
         return true;
     }
@@ -54,6 +57,55 @@ class MainController
         }
 
         require_once (ROOT. '/views/main/distribution.php');
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function actionNewmanager()
+    {
+        $userID = UserModel::checkLogged();             // перевірка авторизації користувача
+
+        $data = new DataModel();
+
+        $managers = $data->getManagers();
+        $name = '';
+        $email = '';
+        $access = false;
+
+        if(isset($_POST['submit']))
+        {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+
+            $errors = ConfigModel::checkNewmanagerForm($name, $email);
+
+
+            if($errors == false)
+            {
+                //запис в БД
+                $data->addManager($name, $email);
+                $access = true;
+            }
+        }
+
+        require_once (ROOT. '/views/main/newmanager.php');
+        return true;
+    }
+
+    //======================================================================
+    /**
+     * @return bool
+     */
+    public function actionMore($task_id)
+    {
+        $userID = UserModel::checkLogged();             // перевірка авторизації користувача
+
+
+        var_dump($task_id);
+
+        //require_once (ROOT. '/views/main/more.php');
         return true;
     }
 }

@@ -12,11 +12,33 @@
 </head>
 <body>
 
-<a href="/distribution">Конфигурация новой рассылки</a>
+<p><a href="/distribution">Конфигурация новой рассылки </a>/////<a href="/newmanager"> Добавить нового менеджера</a></p>
 
 <p>Ви знаходитесь в розділі управління розсилками</p>
 <p>тут різні данні по розсилкам</p>
 
+<?php if($tasks): ?>
+<table>
+    <tr>
+        <td>Тема рассылки</td>
+        <td>Дата начала</td>
+        <td>Количество адресатов</td>
+        <td>Отправитель</td>
+    </tr>
+    <?php foreach ($tasks as $row): ?>
+
+        <tr>
+            <td><?php echo $row['subject'];?></td>
+            <td><?php echo $row['start'];?></td>
+            <td><?php echo $row['amount'];?></td>
+            <td><?php echo $row['manager'];?></td>
+            <td><a href="<?php echo '/more/' . $row['id'] ; ?>">Детально</a></td>
+        </tr>
+
+        <?php var_dump($row['id']); ?>
+    <?php endforeach; ?>
+</table>
+<?php endif; ?>
 
 
 
